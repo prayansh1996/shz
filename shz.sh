@@ -3,18 +3,30 @@
 basePath=~/Documents/
 declare -a repos=(search-service experimentation-service)
 
+printf "⚡⚡⚡ \e[7m\e[1m\e[93m $i Shazam!  \033[m ⚡⚡⚡ \n"
+
+if [[ $# -eq 0 ]]
+then
+    printf "\nRun git command on the following repos parallelly:\n"
+    for name in "${repos[@]}"; do echo ${basePath}$name; done
+    
+    printf "\nUsage:
+    shz status
+    shz checkout master"
+    exit
+fi
+
+
 # store process ids and return status of background jobs
 declare -a pids
 declare -a status
-
-printf "⚡⚡⚡ \e[7m\e[1m\e[93m $i Shazam!  \033[m ⚡⚡⚡ \n"
 
 for name in "${repos[@]}"
 do
     path=${basePath}$name
 
     # -C specifies the directory for git
-    # $@ pastes all comman line arguments
+    # $@ pastes all command line arguments
     # &> redirects stdout and stderr to file shazam_prefix_<branch-name>
     # & pushes process to background
     git -C $path $@ &> shazam_prefix_${name} &
