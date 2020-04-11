@@ -17,25 +17,25 @@ do
 done
 
 # Wait for all async processes to finish
-for pid in "$pids"
+for pid in "${pids[@]}"
 do
     wait $pid
     status+=($?)
 done
 
-# Check if any of the processes failed
 for i in "${!repos[@]}"
 do
     name=${repos[$i]}
     
     if [[ ${status[$i]} -gt 0 ]] 
     then
-        printf "\n❌ \e[7m\e[1m\e[93m %s Failed \033[m ❌\n" $name
+        printf "\n❌ %s ❌\n" $name
     else
-        printf "\n⚡ \e[7m\e[1m\e[93m %s \033[m ⚡ \n" $name
+        printf "\n⚡ %s ⚡ \n" $name
     fi
     
     cat shazam_prefix_${name}
 done
 
-# rm shazam_prefix_* || true
+echo
+rm shazam_prefix_* || true
